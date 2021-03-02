@@ -26,10 +26,10 @@ Fast Actor library uses advanced features of [ForkJoinPool](https://docs.oracle.
 It's without limitation of comunication amoung Actors, offers decreased overhead from parallel synchronisation primitives and is also very cache friendly.
 
 ### Batching
-TODO
+For maximization of throughput messages sent to Actors are proccesed in batches. It reduces overhead of Actors scheduling and improves cache locality. On the other hand it has negative impact on fairness because some Actors can be blocked by other with higher number of messages. As workaroud more Actor systems can be created for Actors with different CPU utilization requirements. The Fast Actor library supports comunication of Actors from different its Actor System implicitly.
 
 ### GC optimalization
-TODO
+Garbage Collertor is invoked when a memory allocation request fails or reach a level, which happens at a frequency proportional to the rate memory is allocated. And GC runs for a time proportional to the number of live objects. These two metrics determine total GC time and both cases are optimalized in Fast Actor library. Amount of memory used and newly allocated is minimal compared to other Actor libraries.
 
 ## Build
 This library uses Maven, you can build it and get desired jar file with `mvn package`.
