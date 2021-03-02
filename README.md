@@ -32,7 +32,7 @@ For maximization of throughput messages sent to Actors are proccesed in batches.
 Garbage Collertor is invoked when a memory allocation request fails or reach a level, which happens at a frequency proportional to the rate memory is allocated. And GC runs for a time proportional to the number of live objects. These two metrics determine total GC time and both cases are optimalized in Fast Actor library. Amount of memory used and newly allocated is minimal compared to other Actor libraries.
 
 ### Messages and Actor state
-Visibility of all fields defined inside of Actors are guaranted by [Happens-Before](https://javarevisited.blogspot.com/2020/01/what-is-happens-before-in-java-concurrency.html#axzz6nysLoMrT) rules. It's thread-safe only in case when these fields are used only by Actor which own them (by their methods preStart and onMessage). Message doesn't need to be immutable but after it is sent to Actor, its modification can cause a race condition.   
+Visibility of all fields defined inside of Actors are guaranted by [Happens-Before](https://javarevisited.blogspot.com/2020/01/what-is-happens-before-in-java-concurrency.html#axzz6nysLoMrT) rules. It's thread-safe only in case when these fields are used only by Actor which own them (by their methods `preStart` and `onMessage`). Message doesn't need to be immutable but after it is sent to Actor, its modification can cause a race condition.   
 
 ## Build
 This library uses Maven, you can build it and get desired jar file with `mvn package`.
