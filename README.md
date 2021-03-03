@@ -16,6 +16,8 @@ Commonly we create variables and allow any thread to modify them-in a controlled
 
 An alternate middle ground to deal with state is isolated mutability, where variables are mutable but are never seen by more than one thread, ever. We ensure that anything that’s shared between threads is immutable. Java programmers find this fairly easy to design, and so the isolated mutability may be a reasonable approach. This approach can be reached by Actors.
 
+Moreover isolated mutability also works more effectively with modern processor architecture [NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access). Modern GC as [ZGC](https://wiki.openjdk.java.net/display/zgc/Main) can store isolated state in memory owned by processor on which its thread runs and [affinity](https://en.wikipedia.org/wiki/Processor_affinity) then can map this thread on the same processor repeatedly.
+
 ## Design
 There are three points which improve performance of Actors significantly: mapping of Actors to threads, batching and GC optimalization.
 ### Mapping of actors
