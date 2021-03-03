@@ -19,7 +19,7 @@ An alternate middle ground to deal with state is isolated mutability, where vari
 Moreover isolated mutability also works more effectively with modern processor architecture [NUMA](https://en.wikipedia.org/wiki/Non-uniform_memory_access). Modern GC as [ZGC](https://wiki.openjdk.java.net/display/zgc/Main) can store isolated state in memory owned by processor on which its thread runs and [affinity](https://en.wikipedia.org/wiki/Processor_affinity) then can map this thread on the same processor repeatedly.
 
 ## Design
-There are three points which improve performance of Actors significantly: mapping of Actors to threads, batching and GC optimalization.
+There are four points which improve performance of Actors significantly: mapping of Actors to threads, batching, GC optimalization and fast mailbox.
 ### Mapping of actors
 Fast Actor library uses advanced features of [ForkJoinPool](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html) to map groups of Actors which comunicate frequently together on the same thread. Example is figured on the following picture:
 
@@ -33,11 +33,101 @@ For maximization of throughput messages sent to Actors are proccesed in batches.
 ### GC optimalization
 Garbage Collertor is invoked when a memory allocation request fails or reach a level, which happens at a frequency proportional to the rate memory is allocated. And GC runs for a time proportional to the number of live objects. These two metrics determine total GC time and both cases are optimalized in Fast Actor library. Amount of memory used and newly allocated is minimal compared to other Actor libraries.
 
+### Extremely fast wait-free mailbox
+[Non-intrusive MPSC node-based queue from D. Vyukov](http://www.1024cores.net/home/lock-free-algorithms/queues/non-intrusive-mpsc-node-based-queue) is used for implementaion of mailbox.
+
 ### Messages and Actor state
 Visibility of all fields defined inside of Actors are guaranted by [Happens-Before](https://javarevisited.blogspot.com/2020/01/what-is-happens-before-in-java-concurrency.html#axzz6nysLoMrT) rules. It's thread-safe only in case when these fields are used only by Actor which own them (by their methods `preStart` and `onMessage`). Message doesn't need to be immutable but after it is sent to Actor, its modification can cause a race condition.   
 
 ## Build
 This library uses Maven, you can build it and get desired jar file with `mvn package`.
+
+## How to use it
+### Defining an Actor class
+Actors are implemented by extending the Actor class and implementing the `onMessage` method. The `onMessage` method should define a series of case/if statements that defines which messages your Actor can handle.
+
+Here is an example:
+
+```java
+import com.fastactor.Actor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class MyActor extends Actor<MyActor.Message> {
+    private static final Logger logger = LogManager.getLogger(MyActor.class);
+
+    interface Message {}
+
+    static public class TextMessages implements Message {
+        private final String text;
+
+        public TextMessages(String text) {
+            this.text = text;
+        }
+
+        public String getText() {
+            return text;
+        }
+    }
+
+    @Override
+    protected void onMessage(Message m) {
+        if (m instanceof TextMessages) {
+            processMessage((TextMessages) m);
+        } else {
+            logger.error("received unknown message");
+        }
+    }
+
+    private void processMessage(TextMessages textMessages) {
+        logger.info("Received Text message: {}", textMessages.getText());
+    }
+}
+```
+
+### Send messages
+Messages are sent to an Actor through method `ActorRef.tell`. `tell` means "fire-and-forget", e.g. send a message asynchronously and return immediately. Message ordering is guaranteed on a per-sender basis.
+
+### Tell: Fire-forget
+This is the only way of sending messages. No blocking waiting for a message. This gives the best concurrency and scalability characteristics:
+
+```java
+ref.tell(new MyActor.TextMessages("Hello World!"));
+```
+
+To acquire an ActorRef you have to assign your Actor to `ActorSystem`.
+
+```java
+ActorSystem actorSystem = new ActorSystem();
+ActorRef<MyActor.Message> ref = actorSystem.actorOf(new MyActor());
+```
+
+### Start Hook
+Right after assigning the Actor to an instance of `ActorSystem`, its `preStart` method is invoked.
+
+```java
+@Override
+protected void preStart() {
+  // e.g. send an init message
+}
+```
+
+### API
+It offers:
+- `getSelf()` reference to the ActorRef of the actor
+- `getName()` each actor has a name which is set by constructor or generated
+
+### Router
+In some cases it is useful to distribute messages of the same type over a set of actors, so that messages can be processed in parallel - a single (or group) actor(s) will only process one message at a time.
+
+The router itself forwards any message sent to it to one (or a few) final recipient(s) out of the set of routees.
+
+```java
+List<Actor<MyActor.Message>> myActors = Router.supplierToList(new MyActorFactory(), 100);
+router = new Router<>("Broadcast-to-100-actors", new Router.BroadcastRoutingLogic<>(), myActors);
+ActorRef<> routerRef = actorSystem.actorOf(router);
+routerRef.tell(new MyActor.TextMessages("Hello 100 times!"));
+```
 
 ## License
 Fast Actor is Open Source and available under the Apache 2 License.
