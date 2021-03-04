@@ -39,6 +39,9 @@ Garbage Collertor is invoked when a memory allocation request fails or reach a l
 ### Messages and Actor state
 Visibility of all fields defined inside of Actors are guaranted by [Happens-Before](https://javarevisited.blogspot.com/2020/01/what-is-happens-before-in-java-concurrency.html#axzz6nysLoMrT) rules. It's thread-safe only in case when these fields are used only by Actor which own them (by their methods `preStart` and `onMessage`). Message doesn't need to be immutable but after it is sent to Actor, its modification can cause a race condition.   
 
+### API
+Simplified API from [Akka Actor](https://doc.akka.io/docs/akka/current/actors.html) framework was used for Fast Actor library. It should make learning curve more favorable for people which know it. The API is also more friendly than API of Akka Actor framework for Java applications.   
+
 ## Build
 This library uses Maven, you can build it and get desired jar file with `mvn package`.
 
