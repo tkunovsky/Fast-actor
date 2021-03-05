@@ -133,7 +133,7 @@ routerRef.tell(new MyActor.TextMessages("Hello 100 times!"));
 ```
 
 ## Performance
-For performance measure [Akka Actor](https://doc.akka.io/docs/akka/current/typed/actors.html) framework was used for comparison. It was tested on HW [AMD RYZEN 5 3600](https://www.amd.com/en/products/cpu/amd-ryzen-5-3600) and [HyperX 16GB KIT DDR4 3200MHz CL16 Predator Series](https://www.amazon.com/Kingston-Technology-HyperX-HX432C16PB3K2-16/dp/B01GCWQ8VO). There were three simple test. 
+For performance measure [Akka Actor](https://doc.akka.io/docs/akka/current/typed/actors.html) framework (v2.6.10_2.13) was used for comparison. Version of Fast Actor was 0.1. It was tested on HW [AMD RYZEN 5 3600](https://www.amd.com/en/products/cpu/amd-ryzen-5-3600) and [HyperX 16GB KIT DDR4 3200MHz CL16 Predator Series](https://www.amazon.com/Kingston-Technology-HyperX-HX432C16PB3K2-16/dp/B01GCWQ8VO). There were three simple test. 
 
 ### Simple ping-pong test
 First it's simple ping-pong test where there are groups which contain 2 actors (ping and pong). In graph (lower value is better) you can see Fast Actor library is more than twice faster:
