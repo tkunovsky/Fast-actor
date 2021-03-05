@@ -132,5 +132,15 @@ ActorRef<> routerRef = actorSystem.actorOf(router);
 routerRef.tell(new MyActor.TextMessages("Hello 100 times!"));
 ```
 
+## Performance
+For performance measure [Akka Actor](https://doc.akka.io/docs/akka/current/typed/actors.html) framework was used for comparison. It was tested on HW [AMD RYZEN 5 3600](https://www.amd.com/en/products/cpu/amd-ryzen-5-3600) and [HyperX 16GB KIT DDR4 3200MHz CL16 Predator Series](https://www.amazon.com/Kingston-Technology-HyperX-HX432C16PB3K2-16/dp/B01GCWQ8VO). There were three simple test. 
+
+### Simple ping-pong test
+First it's simple ping-pong test where there are groups which contain 2 actors (ping and pong). In graph (lower value is better) you can see Fast Actor library is more than twice faster:
+
+![image](https://user-images.githubusercontent.com/9279768/110137879-a2ecd900-7dd1-11eb-9ccd-6de3e9bda48f.png)
+
+You can find source code of tests in [AkkaActorSystemAdvancedTest](https://github.com/tkunovsky/Fast-actor/blob/main/src/test/java/com/fastactor/AkkaActorSystemAdvancedTest.java)::manyActorsFewMessages and [ActorSystemAdvancedTest](https://github.com/tkunovsky/Fast-actor/blob/main/src/test/java/com/fastactor/ActorSystemAdvancedTest.java)::manyActorsFewMessages.
+
 ## License
 Fast Actor is Open Source and available under the Apache 2 License.
