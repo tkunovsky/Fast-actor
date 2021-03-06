@@ -142,5 +142,17 @@ First it's simple ping-pong test where there are groups which contain 2 actors (
 
 You can find source code of tests in [AkkaActorSystemAdvancedTest](https://github.com/tkunovsky/Fast-actor/blob/main/src/test/java/com/fastactor/AkkaActorSystemAdvancedTest.java)::manyActorsFewMessages and [ActorSystemAdvancedTest](https://github.com/tkunovsky/Fast-actor/blob/main/src/test/java/com/fastactor/ActorSystemAdvancedTest.java)::manyActorsFewMessages.
 
+### Advanced ping-pong test
+Second it's advanced ping-pong test where there are groups which contain 1001 actors (1 ping and 1000 pongs). In graph (lower value is better) you can see Fast Actor library is more than 3 times faster:
+![image](https://user-images.githubusercontent.com/9279768/110200357-cf4e3700-7e5d-11eb-9d86-17a7dcf4f958.png)
+
+You can find source code of tests in [AkkaActorSystemAdvancedTest](https://github.com/tkunovsky/Fast-actor/blob/main/src/test/java/com/fastactor/AkkaActorSystemAdvancedTest.java)::manyMessagesFromPong and [ActorSystemAdvancedTest](https://github.com/tkunovsky/Fast-actor/blob/main/src/test/java/com/fastactor/ActorSystemAdvancedTest.java)::manyMessagesFromPong.
+
+### Fibonacci
+Third it's computing of [F(n)](https://en.wikipedia.org/wiki/Fibonacci_number). In graph (lower value is better) you can see Fast Actor library is more than twice faster:
+![image](https://user-images.githubusercontent.com/9279768/110203196-f95b2580-7e6c-11eb-891c-6c5cdafd9dc0.png)
+
+You can find source code of tests in [AkkaActorSystemAdvancedTest](https://github.com/tkunovsky/Fast-actor/blob/main/src/test/java/com/fastactor/AkkaActorSystemAdvancedTest.java)::fibonacci and [ActorSystemAdvancedTest](https://github.com/tkunovsky/Fast-actor/blob/main/src/test/java/com/fastactor/ActorSystemAdvancedTest.java)::fibonacci.
+
 ## License
 Fast Actor is Open Source and available under the Apache 2 License.
