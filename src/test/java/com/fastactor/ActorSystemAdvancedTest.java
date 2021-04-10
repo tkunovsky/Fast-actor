@@ -12,8 +12,8 @@ public class ActorSystemAdvancedTest {
 
     @Test
     void manyActorsFewMessages() throws InterruptedException {
-        int messageCount = 10000;
-        int actorPingCount = 1000000;
+        int messageCount = 1000;
+        int actorPingCount = 100000;
 
         ActorSystem actorSystem = new ActorSystem(threadPoolSize);
 
@@ -27,8 +27,8 @@ public class ActorSystemAdvancedTest {
 
     @Test
     void fewActorsManyMessages() throws InterruptedException {
-        int messageCount = 10000000;
-        int actorPingCount = 1000;
+        int messageCount = 1000000;
+        int actorPingCount = 100;
 
         ActorSystem actorSystem = new ActorSystem(threadPoolSize);
 
@@ -42,9 +42,9 @@ public class ActorSystemAdvancedTest {
 
     @Test
     void manyMessagesFromPong() throws InterruptedException {
-        int messageCount = 1000;
-        int actorPingCount = 1000;
-        int pongPerPing = 1000;
+        int messageCount = 100;
+        int actorPingCount = 100;
+        int pongPerPing = 100;
 
         ActorSystem actorSystem = new ActorSystem(threadPoolSize);
 
@@ -59,8 +59,8 @@ public class ActorSystemAdvancedTest {
     @Test
     void sleepingPingActors() throws InterruptedException {
         int messageCount = 10;
-        int actorPingCount = 1000;
-        int sleepTime = 100;
+        int actorPingCount = 100;
+        int sleepTime = 10;
 
         ActorSystem actorSystem = new ActorSystem(threadPoolSize);
 
