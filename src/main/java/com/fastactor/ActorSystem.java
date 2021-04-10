@@ -16,14 +16,15 @@ package com.fastactor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
 import java.util.concurrent.*;
 
 /**
  * An actor system is a flat group of actors which share thread pool. It is also the entry point for creating actors.
- *
+ * <p>
  * There are several possibilities for creating actors it specific system:
- *
+ * <p>
  * {@code
  * system.actorOf(actor)
  * actor.actorOf(actor)
@@ -41,11 +42,9 @@ public final class ActorSystem {
     public ActorSystem(int maximumThreadsNumber) {
         logger.debug("Maximum number of thread is {}", maximumThreadsNumber);
 
-        final ForkJoinWorkerThreadFactory usTFactory = new ForkJoinWorkerThreadFactory()
-        {
+        final ForkJoinWorkerThreadFactory usTFactory = new ForkJoinWorkerThreadFactory() {
             @Override
-            public ForkJoinWorkerThread newThread(ForkJoinPool pool)
-            {
+            public ForkJoinWorkerThread newThread(ForkJoinPool pool) {
                 final ForkJoinWorkerThread worker = ForkJoinPool.defaultForkJoinWorkerThreadFactory.newThread(pool);
                 worker.setName("Actor-Thread-User-" + worker.getPoolIndex());
                 return worker;
@@ -61,7 +60,6 @@ public final class ActorSystem {
 
     /**
      * Creates a new ActorSystem with thread pool with number of threads according number of processors.
-     *
      */
     public ActorSystem() {
         this(Runtime.getRuntime().availableProcessors());
@@ -93,7 +91,7 @@ public final class ActorSystem {
      * Blocks until all actors in the system are idle.
      *
      * @param timeout max blocking time
-     * @param unit unit for timeout
+     * @param unit    unit for timeout
      */
     public boolean waitOnIdle(long timeout, TimeUnit unit) {
         return userThreadPool.awaitQuiescence(timeout, unit);

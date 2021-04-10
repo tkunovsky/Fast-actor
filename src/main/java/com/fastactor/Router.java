@@ -16,6 +16,7 @@ package com.fastactor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -24,12 +25,12 @@ import java.util.function.Supplier;
 /**
  * Messages can be sent via a router to efficiently route them to destination actors, known as its routees.
  * A Router can be used inside or outside of an actor. It acts as special actor.
- *
+ * <p>
  * Different routing strategies can be used, according to your application’s needs.
  * It comes with several useful routing strategies right out of the box. But it is also possible to create your own.
  *
  * @param <RouteeMessageType> base type of routee messages
- * @param <RoutingType> type of messages which you need to route
+ * @param <RoutingType>       type of messages which you need to route
  */
 public final class Router<RouteeMessageType, RoutingType extends RouteeMessageType> {
     private RoutingLogic<RouteeMessageType, RoutingType> routingLogic;
@@ -42,7 +43,7 @@ public final class Router<RouteeMessageType, RoutingType extends RouteeMessageTy
     /**
      * Interface for implementation of custom routing logic.
      *
-     * @param <RouteeMessageType> base type of routee messages
+     * @param <RouteeMessageType>  base type of routee messages
      * @param <RoutingMessageType> type of messages which you need to route
      */
     public interface RoutingLogic<RouteeMessageType, RoutingMessageType extends RouteeMessageType> {
@@ -59,13 +60,13 @@ public final class Router<RouteeMessageType, RoutingType extends RouteeMessageTy
      * A broadcast router forwards the message it receives to all its routees.
      *
      * @param <RouteeMessageType> base type of routee messages
-     * @param <RoutingType> type of messages which you need to route
+     * @param <RoutingType>       type of messages which you need to route
      */
     public static class BroadcastRoutingLogic<RouteeMessageType, RoutingType extends RouteeMessageType> implements RoutingLogic<RouteeMessageType, RoutingType> {
 
         @Override
         public void select(RoutingType message, List<Routee<RouteeMessageType>> routees) {
-            for (Routee<RouteeMessageType> routee: routees) {
+            for (Routee<RouteeMessageType> routee : routees) {
                 routee.getActorRef().tell(message);
             }
         }
@@ -75,7 +76,7 @@ public final class Router<RouteeMessageType, RoutingType extends RouteeMessageTy
      * Routes in a round-robin fashion to its routees
      *
      * @param <RouteeMessageType> base type of routee messages
-     * @param <RoutingType> type of messages which you need to route
+     * @param <RoutingType>       type of messages which you need to route
      */
     public static class RoundRobinRoutingLogic<RouteeMessageType, RoutingType extends RouteeMessageType> implements RoutingLogic<RouteeMessageType, RoutingType> {
         private int lastIndex = 0;
@@ -97,13 +98,12 @@ public final class Router<RouteeMessageType, RoutingType extends RouteeMessageTy
      * The ConsistentHashingRoutingLogic uses hashFunction to select a routee based on the sent message.
      *
      * @param <RouteeMessageType> base type of routee messages
-     * @param <RoutingType> type of messages which you need to route
+     * @param <RoutingType>       type of messages which you need to route
      */
     public static class ConsistentHashingRoutingLogic<RouteeMessageType, RoutingType extends RouteeMessageType> implements RoutingLogic<RouteeMessageType, RoutingType> {
         private final Function<RoutingType, Long> hashFunction;
 
         /**
-         *
          * @param hashFunction hash function for message distribution
          */
         public ConsistentHashingRoutingLogic(Function<RoutingType, Long> hashFunction) {
@@ -118,21 +118,19 @@ public final class Router<RouteeMessageType, RoutingType extends RouteeMessageTy
     }
 
     /**
-     *
      * @param routingLogic logic for target routee selection
      * @param actorFactory factory for routee
-     * @param poolSize number of routee which will be created
+     * @param poolSize     number of routee which will be created
      */
     public Router(RoutingLogic<RouteeMessageType, RoutingType> routingLogic, Supplier<Actor<RouteeMessageType>> actorFactory, int poolSize) {
         init(routingLogic, supplierToList(actorFactory, poolSize), null);
     }
 
     /**
-     *
-     * @param name name of router (which set it as name of his actor)
+     * @param name         name of router (which set it as name of his actor)
      * @param routingLogic logic for target routee selection
      * @param actorFactory factory for routee
-     * @param poolSize number of routee which will be created
+     * @param poolSize     number of routee which will be created
      */
     public Router(String name, RoutingLogic<RouteeMessageType, RoutingType> routingLogic,
                   Supplier<Actor<RouteeMessageType>> actorFactory, int poolSize) {
@@ -140,19 +138,17 @@ public final class Router<RouteeMessageType, RoutingType extends RouteeMessageTy
     }
 
     /**
-     *
      * @param routingLogic logic for target routee selection
-     * @param actors list of actors which will be used as routee
+     * @param actors       list of actors which will be used as routee
      */
     public Router(RoutingLogic<RouteeMessageType, RoutingType> routingLogic, List<Actor<RouteeMessageType>> actors) {
         init(routingLogic, actors, null);
     }
 
     /**
-     *
-     * @param name name of router (which set it as name of his actor)
+     * @param name         name of router (which set it as name of his actor)
      * @param routingLogic logic for target routee selection
-     * @param actors list of actors which will be used as routee
+     * @param actors       list of actors which will be used as routee
      */
     public Router(String name, RoutingLogic<RouteeMessageType, RoutingType> routingLogic, List<Actor<RouteeMessageType>> actors) {
         init(routingLogic, actors, name);
@@ -162,8 +158,8 @@ public final class Router<RouteeMessageType, RoutingType extends RouteeMessageTy
      * Creates list of actors using factory
      *
      * @param actorFactory factory for routee
-     * @param poolSize number of routee which will be created
-     * @param <T> base type of routee messages
+     * @param poolSize     number of routee which will be created
+     * @param <T>          base type of routee messages
      * @return created list of actors
      */
     public static <T> List<Actor<T>> supplierToList(Supplier<Actor<T>> actorFactory, int poolSize) {
@@ -188,7 +184,7 @@ public final class Router<RouteeMessageType, RoutingType extends RouteeMessageTy
 
     void setActorSystem(ActorSystem actorSystem) {
         internalRouter.setActorSystem(actorSystem);
-        for (Actor<RouteeMessageType> actor:actors) {
+        for (Actor<RouteeMessageType> actor : actors) {
             actor.setActorSystem(actorSystem);
         }
     }

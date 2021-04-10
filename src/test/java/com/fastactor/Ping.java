@@ -3,11 +3,13 @@ package com.fastactor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jctools.queues.MpscLinkedQueue;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Supplier;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Ping extends Actor<Ping.Message> {
@@ -65,7 +67,7 @@ public class Ping extends Actor<Ping.Message> {
     protected void preStart() {
         pongs = new ActorRef[pongCount];
         for (int m = 0; m < pongCount; m++) {
-            pongs[m] = actorOf(new Pong(queueFactory, pongId  + "." + m));
+            pongs[m] = actorOf(new Pong(queueFactory, pongId + "." + m));
             pongs[m].tell(new Message(initData, getSelf()));
             lastValues.put(pongs[m], initData);
         }

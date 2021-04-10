@@ -8,9 +8,11 @@ import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.ActorRef;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AkkaPing extends AbstractBehavior<AkkaPing.Message> {
@@ -43,7 +45,7 @@ public class AkkaPing extends AbstractBehavior<AkkaPing.Message> {
         this.sleepTime = sleepTime;
         pongs = new ActorRef[pongCount];
         for (int m = 0; m < pongCount; m++) {
-            pongs[m] = context.spawn(AkkaPong.create(context.getSelf()), pongId  + "." + m);
+            pongs[m] = context.spawn(AkkaPong.create(context.getSelf()), pongId + "." + m);
             pongs[m].tell(new Message(initValue, getContext().getSelf()));
             lastValues.put(pongs[m], initValue);
         }

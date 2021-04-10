@@ -2,11 +2,13 @@ package com.fastactor;
 
 import java.util.Queue;
 import java.util.function.Supplier;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Pong extends Actor<Ping.Message>  {
+public class Pong extends Actor<Ping.Message> {
 
     private Integer lastValue;
+
     public Pong(Supplier<Queue<Ping.Message>> queueFactory, String id) {
         super(id, queueFactory);
     }

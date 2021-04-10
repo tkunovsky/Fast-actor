@@ -16,9 +16,9 @@ package com.fastactor;
 
 /**
  * Immutable handle to an actor. An ActorRef
- * can be obtained from an {@link tarantula.actors.system.ActorSystem}. This means
+ * can be obtained from an {@link com.fastactor.ActorSystem}. This means
  * actors can be created in the ActorSystem or by existing actor.
- *
+ * <p>
  * ActorRefs can be freely shared among actors by message passing. Message
  * passing conversely is their only purpose, as demonstrated in the following
  *

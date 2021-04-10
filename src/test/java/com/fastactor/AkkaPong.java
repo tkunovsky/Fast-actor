@@ -8,6 +8,7 @@ import akka.actor.typed.javadsl.Receive;
 import akka.actor.typed.ActorRef;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AkkaPong extends AbstractBehavior<AkkaPing.Message> {

@@ -2,6 +2,7 @@ package com.fastactor;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -18,7 +19,7 @@ public class ActorSystemAdvancedTest {
 
         CountDownLatch countDownLatch = new CountDownLatch(actorPingCount);
         for (int a = 0; a < actorPingCount; a++) {
-            actorSystem.actorOf(new Ping(messageCount, countDownLatch, "Ping-" + a,  "Pong-" + a));
+            actorSystem.actorOf(new Ping(messageCount, countDownLatch, "Ping-" + a, "Pong-" + a));
         }
 
         countDownLatch.await();
@@ -33,7 +34,7 @@ public class ActorSystemAdvancedTest {
 
         CountDownLatch countDownLatch = new CountDownLatch(actorPingCount);
         for (int a = 0; a < actorPingCount; a++) {
-            actorSystem.actorOf(new Ping(messageCount, countDownLatch, "Ping-" + a,  "Pong-" + a));
+            actorSystem.actorOf(new Ping(messageCount, countDownLatch, "Ping-" + a, "Pong-" + a));
         }
 
         countDownLatch.await();
@@ -47,9 +48,9 @@ public class ActorSystemAdvancedTest {
 
         ActorSystem actorSystem = new ActorSystem(threadPoolSize);
 
-        CountDownLatch countDownLatch = new CountDownLatch(actorPingCount*pongPerPing);
+        CountDownLatch countDownLatch = new CountDownLatch(actorPingCount * pongPerPing);
         for (int a = 0; a < actorPingCount; a++) {
-            actorSystem.actorOf(new Ping(messageCount, countDownLatch, "Ping-" + a,  "Pong-" + a, pongPerPing));
+            actorSystem.actorOf(new Ping(messageCount, countDownLatch, "Ping-" + a, "Pong-" + a, pongPerPing));
         }
 
         countDownLatch.await();
@@ -65,7 +66,7 @@ public class ActorSystemAdvancedTest {
 
         CountDownLatch countDownLatch = new CountDownLatch(actorPingCount);
         for (int a = 0; a < actorPingCount; a++) {
-            actorSystem.actorOf(new Ping(messageCount, countDownLatch, sleepTime, "Ping-" + a,  "Pong-" + a));
+            actorSystem.actorOf(new Ping(messageCount, countDownLatch, sleepTime, "Ping-" + a, "Pong-" + a));
         }
 
         countDownLatch.await();

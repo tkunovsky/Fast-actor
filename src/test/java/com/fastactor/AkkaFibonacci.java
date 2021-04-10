@@ -1,15 +1,14 @@
 package com.fastactor;
 
 import akka.actor.typed.javadsl.AbstractBehavior;
+
 import java.util.concurrent.BlockingQueue;
+
 import akka.actor.typed.Behavior;
-import akka.actor.typed.javadsl.AbstractBehavior;
 import akka.actor.typed.javadsl.Behaviors;
 import akka.actor.typed.javadsl.Receive;
 import akka.actor.typed.javadsl.ActorContext;
 import akka.actor.typed.ActorRef;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class AkkaFibonacci extends AbstractBehavior<AkkaFibonacci.Command> {
     public static Behavior<AkkaFibonacci.Command> create() {
@@ -95,6 +94,4 @@ public class AkkaFibonacci extends AbstractBehavior<AkkaFibonacci.Command> {
 
         return this;
     }
-
-
 }

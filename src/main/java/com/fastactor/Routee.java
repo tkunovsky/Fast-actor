@@ -16,6 +16,7 @@ package com.fastactor;
 
 /**
  * Routee is destination actor of Router. This interface is for implementation of Router strategy.
+ *
  * @param <T> base message type of routee (actor).
  */
 public interface Routee<T> {

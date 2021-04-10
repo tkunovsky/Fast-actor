@@ -2,6 +2,7 @@ package com.fastactor;
 
 import org.junit.jupiter.api.Test;
 import akka.actor.typed.ActorSystem;
+
 import java.util.concurrent.CountDownLatch;
 
 public class AkkaActorSystemBasicTest {

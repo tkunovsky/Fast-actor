@@ -2,6 +2,7 @@ package com.fastactor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.concurrent.BlockingQueue;
 
 public class Fibonacci extends Actor<Fibonacci.Command> {

@@ -16,20 +16,22 @@ package com.fastactor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.Queue;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
+
 import org.jctools.queues.MpscLinkedQueue;
 
 /**
  * Actor base class that should be extended to create an Actor with the semantics of the 'Actor Model':
  * <a href="http://en.wikipedia.org/wiki/Actor_model">http://en.wikipedia.org/wiki/Actor_model</a>
- *
+ * <p>
  * An actor has a well-defined life-cycle.
- *  - ''RUNNING'' (created and started actor) - can receive messages
- *  - ''NON-RUNNING'' (before it's assigned to an actor system) - can't do anything
- *
+ * - ''RUNNING'' (created and started actor) - can receive messages
+ * - ''NON-RUNNING'' (before it's assigned to an actor system) - can't do anything
+ * <p>
  * The Actor's own {@link ActorRef} is available as {@link #getSelf()}.
  * The only abstract method is {@link #onMessage(MessageType message)} which shall implement message processing.
  *
@@ -62,7 +64,7 @@ public abstract class Actor<MessageType> {
     /**
      * Init a new Actor with the specific name and mailbox queue
      *
-     * @param name name of the new actor
+     * @param name         name of the new actor
      * @param queueFactory factory for mailbox creation
      */
     public Actor(String name, Supplier<Queue<MessageType>> queueFactory) {
@@ -79,7 +81,6 @@ public abstract class Actor<MessageType> {
 
     /**
      * Init a new Actor with the generated name and default mailbox queue {@link org.jctools.queues.MpscLinkedQueue}
-     *
      */
     public Actor() {
         this(null);
@@ -96,16 +97,17 @@ public abstract class Actor<MessageType> {
 
     /**
      * User overridable callback.
-     *
+     * <p>
      * Is called when an Actor is started.
      * Actor are automatically started asynchronously when created.
      * Empty default implementation.
      */
-    protected void preStart() {}
+    protected void preStart() {
+    }
 
     /**
      * The ActorRef representing this actor
-     *
+     * <p>
      * This method is thread-safe and can be called from other threads than the ordinary
      * actor message processing thread.
      */
@@ -115,12 +117,12 @@ public abstract class Actor<MessageType> {
 
     /**
      * Assigns actor to the same actor system.
-     *
+     * <p>
      * This method is thread-safe and can be called from other threads than the ordinary
      * actor message processing thread,.
      *
      * @param actor actor which is assigned
-     * @param <T> base type of actor messages which is assigned
+     * @param <T>   base type of actor messages which is assigned
      * @return {@link ActorRef} of assigned actor
      */
     protected final <T> ActorRef<T> actorOf(Actor<T> actor) {
