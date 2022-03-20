@@ -1,7 +1,5 @@
 package com.fastactor;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jctools.queues.MpscLinkedQueue;
 
 import java.util.HashMap;
@@ -13,8 +11,6 @@ import java.util.function.Supplier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Ping extends Actor<Ping.Message> {
-    private static final Logger logger = LogManager.getLogger(Ping.class);
-
     private final Integer initData;
     private ActorRef<Ping.Message>[] pongs;
     private final CountDownLatch countDownLatch;
